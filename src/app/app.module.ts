@@ -4,7 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
-
+import {SlimLoadingBarService, SlimLoadingBarComponent} from 'ng2-slim-loading-bar';
+import { DataService } from './shared/services/data.service';
+import { ConfigService } from './shared/utils/config.service';
+import { ItemsService } from './shared/utils/items.service';
+import { NotificationService } from './shared/utils/notification.service';
 /*
  * Platform and Environment providers/directives/pipes
  */
@@ -16,12 +20,18 @@ import { APP_RESOLVER_PROVIDERS } from './app.resolver';
 import { AppState } from './app.service';
 import { Home } from './home';
 import { About } from './about';
+import { Users } from './users';
 import { NoContent } from './no-content';
 
 // Application wide providers
 const APP_PROVIDERS = [
   ...APP_RESOLVER_PROVIDERS,
-  AppState
+  AppState,
+  SlimLoadingBarService,
+  ConfigService,
+  DataService,
+  ItemsService,
+  NotificationService,
 ];
 
 /**
@@ -33,6 +43,7 @@ const APP_PROVIDERS = [
     App,
     About,
     Home,
+    Users,
     NoContent
   ],
   imports: [ // import Angular's modules

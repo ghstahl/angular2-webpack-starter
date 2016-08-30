@@ -1,10 +1,12 @@
 /*
  * Angular 2 decorators and services
  */
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component,OnInit, ViewEncapsulation } from '@angular/core';
+import {SlimLoadingBarService, SlimLoadingBarComponent} from 'ng2-slim-loading-bar';
+
 
 import { AppState } from './app.service';
-
+import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 /*
  * App Component
  * Top Level Component
@@ -12,51 +14,13 @@ import { AppState } from './app.service';
 @Component({
   selector: 'app',
   encapsulation: ViewEncapsulation.None,
+  directives: [ROUTER_DIRECTIVES, SlimLoadingBarComponent],
   styleUrls: [
     './app.style.css'
   ],
-  template: `
-    <nav>
-      <span>
-        <a [routerLink]=" ['./'] ">
-          Index
-        </a>
-      </span>
-      |
-      <span>
-        <a [routerLink]=" ['./home'] ">
-          Home
-        </a>
-      </span>
-      |
-      <span>
-        <a [routerLink]=" ['./detail'] ">
-          Detail
-        </a>
-      </span>
-      |
-      <span>
-        <a [routerLink]=" ['./about'] ">
-          About
-        </a>
-      </span>
-    </nav>
+  // Every Angular template is first compiled by the browser before Angular runs it's compiler
+  templateUrl: './app.component.html',
 
-    <main>
-      <router-outlet></router-outlet>
-    </main>
-
-    <pre class="app-state">this.appState.state = {{ appState.state | json }}</pre>
-
-    <footer>
-      <span>WebPack Angular 2 Starter by <a [href]="url">@AngularClass</a></span>
-      <div>
-        <a [href]="url">
-          <img [src]="angularclassLogo" width="25%">
-        </a>
-      </div>
-    </footer>
-  `
 })
 export class App {
   angularclassLogo = 'assets/img/angularclass-avatar.png';
@@ -64,7 +28,9 @@ export class App {
   url = 'https://twitter.com/AngularClass';
 
   constructor(
-    public appState: AppState) {
+    public appState: AppState,
+    private slimLoader: SlimLoadingBarService
+  ) {
 
   }
 
