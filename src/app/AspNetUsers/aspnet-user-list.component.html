@@ -1,0 +1,103 @@
+
+<button class="btn btn-primary" type="button" *ngIf="schedules">
+   <i class="fa fa-calendar" aria-hidden="true"></i> Schedules  
+   <span class="badge">{{totalItems}}</span>
+</button>
+
+<hr/>
+
+<div  @flyInOut="'in'">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th><i class="fa fa-text-width fa-2x" aria-hidden="true"></i>Title</th>
+                <th><i class="fa fa-user fa-2x" aria-hidden="true"></i>Creator</th>
+                <th><i class="fa fa-paragraph fa-2x" aria-hidden="true"></i>Description</th>
+                <th><i class="fa fa-map-marker fa-2x" aria-hidden="true"></i></th>
+                <th><i class="fa fa-calendar-o fa-2x" aria-hidden="true"></i>Time Start</th>
+                <th><i class="fa fa-calendar-o fa-2x" aria-hidden="true"></i>Time End</th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let user of users">
+                <td>{{user.Id}}</td>
+                <td>{{user.UserName}}</td>
+                <td>{{user.EmailConfirmed}}</td>
+                <td>{{user.Enabled}}</td>
+                <td>{{user.timeStart | dateFormat | date:'medium'}}</td>
+                <td>{{user.timeEnd | dateFormat | date:'medium'}}</td>
+                <td><button class="btn btn-primary" (click)="viewScheduleDetails(user.Id)">
+            <i class="fa fa-info-circle" aria-hidden="true"></i>Details</button>
+                </td>
+                <td><a class="btn btn-primary" [routerLink]="['/aspnetusers',user.Id,'edit']"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>Edit</a></td>
+
+            </tr>
+        </tbody>
+    </table>
+
+    <pagination [boundaryLinks]="true" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" class="pagination-sm"
+        previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" (pageChanged)="pageChanged($event)"></pagination>
+</div>
+<modal [animation]="animation" [keyboard]="keyboard" [backdrop]="backdrop" (onClose)="closed()" (onDismiss)="dismissed()"
+    (onOpen)="opened()" #modal>
+    <modal-header [show-close]="true">
+        <h4 class="modal-title" *ngIf="selectedAspNetUserLoaded">{{aspNetUserDetails.UserName}} details</h4>
+    </modal-header>
+    <modal-body *ngIf="selectedAspNetUserLoaded">
+        <form ngNoForm method="post">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label class="control-label"><i class="fa fa-anchor" aria-hidden="true"></i>Id</label>
+                        <input type="text" class="form-control" [(ngModel)]="aspNetUserDetails.User.Id" disabled />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="control-label"><i class="fa fa-user" aria-hidden="true"></i>UserName</label>
+                        <input type="text" class="form-control" [(ngModel)]="aspNetUserDetails.User.UserName" disabled />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="control-label"><i class="fa fa-envelope" aria-hidden="true"></i>Email Confirmed</label>
+                        <input type="text" class="form-control" [(ngModel)]="aspNetUserDetails.User.EmailConfirmed" disabled />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="control-label"><i class="fa fa-check-circle-o" aria-hidden="true"></i>Enabled</label>
+                        <input type="text" class="form-control" [(ngModel)]="aspNetUserDetails.User.Enabled" disabled />
+                    </div>
+                </div>
+            </div>
+
+
+            <hr/>
+            <div class="panel panel-info">
+                <!-- Default panel contents -->
+                <div class="panel-heading">Roles</div>
+
+                <!-- Table -->
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th><i class="fa fa-tag" aria-hidden="true"></i>Role</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let role of aspNetUserDetails.Roles">
+
+                            <td [style.valign]="'middle'">{{role}}</td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </form>
+    </modal-body>
+    <modal-footer [show-default-buttons]="false">
+        <button class="btn btn-danger btn-sm pull-right" (click)="modal.close()">
+            <i class="fa fa-times" aria-hidden="true"></i>Dismiss</button>
+    </modal-footer>
+</modal>

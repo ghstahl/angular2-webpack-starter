@@ -9,6 +9,7 @@ import { DataService } from './shared/services/data.service';
 import { ConfigService } from './shared/utils/config.service';
 import { ItemsService } from './shared/utils/items.service';
 import { NotificationService } from './shared/utils/notification.service';
+import { IdentityService } from './shared/services/identity.service';
 /*
  * Platform and Environment providers/directives/pipes
  */
@@ -32,6 +33,7 @@ const APP_PROVIDERS = [
   DataService,
   ItemsService,
   NotificationService,
+  IdentityService,
 ];
 
 /**

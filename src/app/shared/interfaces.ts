@@ -1,4 +1,22 @@
-﻿export interface IUser {
+﻿export interface IAspNetUser {
+  Id: string;
+  UserName: string;
+  EmailConfirmed: boolean;
+  Enabled: boolean;
+}
+
+export interface IAspNetUserDetails {
+  User: IAspNetUser;
+  Roles:string[];
+}
+
+export class AspNetUsersPaginatedResult<T> {
+  Users :  T;
+  PagingState : string;
+  CurrentPagingState : string;
+  PageSize : number;
+}
+export interface IUser {
     id: number;
     name: string;
     avatar: string;

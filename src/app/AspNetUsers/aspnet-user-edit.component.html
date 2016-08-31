@@ -1,0 +1,100 @@
+<form #editAspNetUserForm="ngForm" *ngIf="userLoaded" novalidate>
+
+
+    <button type="button" class="btn btn-danger" (click)="back()">
+        <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>Back</button>
+    <button type="button" [disabled]="!editAspNetUserForm.form.valid" class="btn btn-default" (click)="updateSchedule(editAspNetUserForm)">
+        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>Update</button>
+    <button [class.hidden]="addingRole" [disabled]="!areRolesAvailable" class="btn btn-primary" (click)="addRoleModal()">
+        <i class="fa fa-tag" aria-hidden="true"></i>Add Role</button>
+    <hr/>
+
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-4">
+                <label class="control-label"><i class="fa fa-user" aria-hidden="true"></i>Id</label>
+                <input type="text" class="form-control" [(ngModel)]="aspNetUserDetails.User.Id" name="Id" #Id="ngModel"  required pattern=".{5,50}" disabled
+                />
+            </div>
+            <div class="col-md-4">
+                <label class="control-label"><i class="fa fa-user" aria-hidden="true"></i>UserName</label>
+                <input type="text" class="form-control" [(ngModel)]="aspNetUserDetails.User.UserName" name="username" #username="ngModel"  required pattern=".{5,50}" disabled
+                />
+            </div>
+            <div class="col-md-4">
+                <label class="control-label"><i class="fa fa-envelope" aria-hidden="true"></i>Email Confirmed</label>
+                <div *ngIf="aspNetUserDetails.User.EmailConfirmed">Yes</div>
+                <div *ngIf="!aspNetUserDetails.User.EmailConfirmed">No</div>
+            </div>
+
+
+        </div>
+    </div>
+    <div class="panel panel-info">
+        <!-- Default panel contents -->
+        <div class="panel-heading">Roles</div>
+
+        <!-- Table -->
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th></th>
+                <th><i class="fa fa-tag" aria-hidden="true"></i>Role</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let role of aspNetUserDetails.Roles">
+                <td [style.valign]="'middle'">
+                    <i class="fa fa-tag" aria-hidden="true"></i>
+                </td>
+                <td [style.valign]="'middle'">{{role}}</td>
+                <td [style.valign]="'middle'">
+                    <button type="button" class="btn btn-danger btn-sm" (click)="removeRole(role)"><i class="fa fa-user-times" aria-hidden="true"></i>Remove</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</form>
+<modal [animation]="animation" [keyboard]="keyboard" [backdrop]="backdrop" (onClose)="closed()" (onDismiss)="dismissed()"
+       (onOpen)="opened()" #modal>
+    <form #editAspNetUserRoleForm="ngForm" *ngIf="userLoaded" novalidate>
+
+        <div class="alert alert-danger" [hidden]="editAspNetUserRoleForm.form.valid">
+            <ul *ngIf="availableRole">
+                <li>Creator name is required <i>(5-50 characters)</i></li>
+            </ul>
+
+        </div>
+
+    <modal-header [show-close]="true">
+        <h4 class="modal-title" *ngIf="userLoaded">{{aspNetUserDetails.User.UserName}} details</h4>
+    </modal-header>
+    <modal-body *ngIf="userLoaded">
+
+            <div class="form-group">
+                <div class="row">
+
+                    <div class="col-md-4 selectContainer">
+                        <label class="control-label"><i class="fa fa-tag" aria-hidden="true"></i>Available Roles</label>
+                        <select class="form-control" [(ngModel)]="availableRole" name="availableRole"  required>
+                            <option *ngFor="let availableRole of filteredAvailableRoles" [value]="availableRole">{{availableRole}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+    </modal-body>
+    <modal-footer [show-default-buttons]="false">
+        <button type="button" class="btn btn-danger" (click)="modal.close()">
+            <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>Cancel</button>
+        <button type="button"
+                [disabled]="!editAspNetUserRoleForm.form.valid"
+                class="btn btn-default"
+                (click)="updateAspNetUserRole(editAspNetUserRoleForm)">
+            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>Add</button>
+
+
+    </modal-footer>
+    </form>
+</modal>
